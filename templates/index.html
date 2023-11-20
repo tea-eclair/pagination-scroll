@@ -1,37 +1,37 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const dataTableBody = document.querySelector("#data-table tbody");
-    let page = 1;
-
-    function loadData() {
-        $.ajax({
-            url: `/load_data/${page}`,
-            method: "GET",
-            success: function(response) {
-                // Добавляем данные в таблицу
-                response.data.forEach(function(item) {
-                    const row = document.createElement("tr");
-                    row.innerHTML = `<td>${item.id}</td><td>${item.name}</td>`;
-                    dataTableBody.appendChild(row);
-                });
-
-                page++;
-            },
-            error: function(error) {
-                console.error("Error loading data:", error);
-            }
-        });
-    }
-
-    function isBottom() {
-        return dataTableBody.scrollHeight - dataTableBody.scrollTop === dataTableBody.clientHeight;
-    }
-
-    dataTableBody.addEventListener("scroll", function() {
-        if (isBottom()) {
-            loadData();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Table Example</title>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+        #data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
-    });
 
-    // Загружаем первую порцию данных при загрузке страницы
-    loadData();
-});
+        #data-table th, #data-table td {
+            border: 1px solid #cf9b9b;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Сериалы и фильмы</th>
+                <th>Описание</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data will be dynamically loaded here -->
+        </tbody>
+    </table>
+
+    <script src="pagination-scroll.js"></script>
+</body>
+</html>
