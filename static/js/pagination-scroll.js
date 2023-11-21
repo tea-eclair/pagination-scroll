@@ -1,7 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const dataTableBody = document.querySelector("#data-table tbody");
     let page = 1;
-    const itemsPerPage = 10;
 
     function loadData() {
         $.ajax({
@@ -24,19 +23,21 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function isBottom() {
-        const scrollHeight = dataTableBody.scrollHeight;
-        const scrollTop = dataTableBody.scrollTop;
-        const clientHeight = dataTableBody.clientHeight;
-
-        return scrollHeight - scrollTop <= clientHeight;
+        const scrollHeight = document.documentElement.scrollHeight;
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        const clientHeight = document.documentElement.clientHeight;
+    
+        // Добавляем дополнительный отступ (например, 5 пикселей) для более надежной проверки
+        return scrollHeight - scrollTop <= clientHeight + 15;
     }
-
-    dataTableBody.addEventListener("scroll", function() {
+    
+    document.addEventListener("scroll", function() {
         if (isBottom()) {
+            console.log("scroll bottom");
             loadData();
         }
     });
-
+    
     // Загружаем первую порцию данных при загрузке страницы
     loadData();
 });
